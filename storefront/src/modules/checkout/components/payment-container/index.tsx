@@ -1,12 +1,10 @@
+import { isManual } from "@/lib/constants"
+import PaymentTest from "@/modules/checkout/components/payment-test"
+import Divider from "@/modules/common/components/divider"
+import Radio from "@/modules/common/components/radio"
 import { RadioGroup } from "@headlessui/react"
-import { InformationCircleSolid } from "@medusajs/icons"
-import { Text, Tooltip, clx } from "@medusajs/ui"
-import React from "react"
-
-import Radio from "@modules/common/components/radio"
-
-import PaymentTest from "../payment-test"
-import { isManual } from "@lib/constants"
+import { Text, clx } from "@medusajs/ui"
+import React, { type JSX } from "react"
 
 type PaymentContainerProps = {
   paymentProviderId: string
@@ -30,7 +28,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         value={paymentProviderId}
         disabled={disabled}
         className={clx(
-          "flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+          "flex flex-col gap-y-2 text-small-regular cursor-pointer py-2",
           {
             "border-ui-border-interactive":
               selectedPaymentOptionId === paymentProviderId,
@@ -55,6 +53,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
           <PaymentTest className="small:hidden text-[10px]" />
         )}
       </RadioGroup.Option>
+      <Divider />
     </>
   )
 }

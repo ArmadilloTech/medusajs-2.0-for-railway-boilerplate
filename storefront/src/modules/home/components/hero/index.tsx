@@ -1,31 +1,45 @@
+"use client"
+
 import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
+import Button from "@/modules/common/components/button"
+import Image from "next/image"
 
 const Hero = () => {
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
+    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-neutral-100">
+      <Image
+        src="/hero-image.jpg"
+        alt="Hero background"
+        layout="fill"
+        quality={100}
+        priority
+      />
+      <div className="absolute inset-0 z-1 flex flex-col justify-center items-center text-center small:p-32 gap-6">
         <span>
+          <p className="text-neutral-600 text-xs uppercase">
+            Be light on your feet
+          </p>
+
           <Heading
             level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+            className="text-6xl leading-10 text-ui-fg-base font-normal mt-10 mb-5"
           >
-            Well done! You have successfully deployed your Medusa 2.0 store on Railway!
+            Portable Bestsellers
           </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Need help customizing your store?
-          </Heading>
+
+          <p className="leading-10 text-ui-fg-subtle font-normal text-lg">
+            See our widest selection of electronics
+          </p>
         </span>
         <a
-          href="https://funkyton.com/medusajs-2-0-is-finally-here/"
+          href="https://github.com/medusajs/b2b-starter-medusa"
           target="_blank"
         >
-          <h1 style={{ textDecoration: "underline" }}>
-            Visit the tutorial
-          </h1>
+          <Button variant="secondary" className="rounded-2xl">
+            <Github />
+            Github Repository
+          </Button>
         </a>
       </div>
     </div>

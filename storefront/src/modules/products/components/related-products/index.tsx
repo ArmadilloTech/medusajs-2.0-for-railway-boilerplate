@@ -1,19 +1,12 @@
-import Product from "../product-preview"
-import { getRegion } from "@lib/data/regions"
-import { getProductsList } from "@lib/data/products"
+import { listProducts } from "@/lib/data/products"
+import { getRegion } from "@/lib/data/regions"
 import { HttpTypes } from "@medusajs/types"
+import { Heading } from "@medusajs/ui"
+import Product from "../product-preview"
 
 type RelatedProductsProps = {
   product: HttpTypes.StoreProduct
   countryCode: string
-}
-
-type StoreProductParamsWithTags = HttpTypes.StoreProductParams & {
-  tags?: string[]
-}
-
-type StoreProductWithTags = HttpTypes.StoreProduct & {
-  tags?: { value: string }[]
 }
 
 export default async function RelatedProducts({
@@ -23,26 +16,27 @@ export default async function RelatedProducts({
   const region = await getRegion(countryCode)
 
   if (!region) {
-  const queryParams: StoreProductParamsWithTags = {}
+    return null
   }
 
   // edit this function to define your related products logic
-  const queryParams: StoreProductParamsWithTags = {}
+  const queryParams: HttpTypes.StoreProductParams & {
+    tags?: string[]
+  } = {}
   if (region?.id) {
     queryParams.region_id = region.id
   }
   if (product.collection_id) {
     queryParams.collection_id = [product.collection_id]
   }
-  const productWithTags = product as StoreProductWithTags
-  if (productWithTags.tags) {
-    queryParams.tags = productWithTags.tags
-      .map((t) => t.value)
+  if (product.tags) {
+    queryParams.tag_id = product.tags
+      .map((t) => t.id)
       .filter(Boolean) as string[]
   }
   queryParams.is_giftcard = false
 
-  const products = await getProductsList({
+  const products = await listProducts({
     queryParams,
     countryCode,
   }).then(({ response }) => {
@@ -56,20 +50,14 @@ export default async function RelatedProducts({
   }
 
   return (
-    <div className="product-page-constraint">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-base-regular text-gray-600 mb-6">
-          Related products
-        </span>
-        <p className="text-2xl-regular text-ui-fg-base max-w-lg">
-          You might also want to check out these products.
-        </p>
-      </div>
-
-      <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8">
+    <div className="flex flex-col gap-y-6 small:py-16 py-6 small:px-24 px-6 bg-neutral-100">
+      <Heading level="h2" className="text-xl text-neutral-950 font-normal">
+        Other customers also viewed
+      </Heading>
+      <ul className="grid grid-cols-1 small:grid-cols-3 medium:grid-cols-4 gap-x-2 gap-y-8">
         {products.map((product) => (
           <li key={product.id}>
-            {region && <Product region={region} product={product} />}
+            <Product region={region} product={product} />
           </li>
         ))}
       </ul>

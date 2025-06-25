@@ -1,28 +1,50 @@
-import { sdk } from "@lib/config"
-import medusaError from "@lib/util/medusa-error"
-import { cache } from "react"
+"use server"
+
+import { sdk } from "@/lib/config"
+import medusaError from "@/lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
+import { getCacheOptions } from "./cookies"
 
-export const listRegions = cache(async function () {
-  return sdk.store.region
-    .list({}, { next: { tags: ["regions"] } })
-    .then(({ regions }) => regions)
-    .catch(medusaError)
-})
+export const listRegions = async (): Promise<HttpTypes.StoreRegion[]> => {
+  const next = {
+    ...(await getCacheOptions("regions")),
+  }
 
-export const retrieveRegion = cache(async function (id: string) {
-  return sdk.store.region
-    .retrieve(id, {}, { next: { tags: ["regions"] } })
-    .then(({ region }) => region)
+  return sdk.client
+    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+      method: "GET",
+      next,
+      cache: "force-cache",
+    })
+    .then(({ regions }: { regions: HttpTypes.StoreRegion[] }) => regions)
     .catch(medusaError)
-})
+}
+
+export const retrieveRegion = async (
+  id: string
+): Promise<HttpTypes.StoreRegion> => {
+  const next = {
+    ...(await getCacheOptions(["regions", id].join("-"))),
+  }
+
+  return sdk.client
+    .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
+      method: "GET",
+      next,
+      cache: "force-cache",
+    })
+    .then(({ region }: { region: HttpTypes.StoreRegion }) => region)
+    .catch(medusaError)
+}
 
 const regionMap = new Map<string, HttpTypes.StoreRegion>()
 
-export const getRegion = cache(async function (countryCode: string) {
+export const getRegion = async (
+  countryCode: string
+): Promise<HttpTypes.StoreRegion | null> => {
   try {
     if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
+      return regionMap.get(countryCode) ?? null
     }
 
     const regions = await listRegions()
@@ -41,8 +63,8 @@ export const getRegion = cache(async function (countryCode: string) {
       ? regionMap.get(countryCode)
       : regionMap.get("us")
 
-    return region
+    return region ?? null
   } catch (e: any) {
     return null
   }
-})
+}
