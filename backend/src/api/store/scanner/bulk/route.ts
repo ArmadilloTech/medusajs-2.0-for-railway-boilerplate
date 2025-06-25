@@ -7,13 +7,13 @@ export async function POST(
   res: MedusaResponse
 ): Promise<void> {
   try {
-    const { ndcCodes } = req.body as { ndcCodes?: string[] }
+    const { skus } = req.body as { skus?: string[] }
 
-    if (!ndcCodes || !Array.isArray(ndcCodes) || ndcCodes.length === 0) {
+    if (!skus || !Array.isArray(skus) || skus.length === 0) {
       res.status(400).json({
         success: false,
-        message: "NDC codes array is required",
-        error: "MISSING_NDC_CODES"
+        message: "SKUs array is required",
+        error: "MISSING_SKUS"
       })
       return
     }
@@ -22,11 +22,11 @@ export async function POST(
     const scannerService: ScannerModuleService = req.scope.resolve(SCANNER_MODULE_KEY)
 
     // Bulk scan the products
-    const results = await scannerService.bulkScan(ndcCodes, "sloc_01JXDNTH9DZ0RG8X40884Z9AKT", req.scope)
+    const results = await scannerService.bulkScan(skus, "sloc_01JXDNTH9DZ0RG8X40884Z9AKT", req.scope)
 
     res.status(200).json({
       success: true,
-      message: `Processed ${ndcCodes.length} NDC codes`,
+      message: `Processed ${skus.length} SKUs`,
       results
     })
 

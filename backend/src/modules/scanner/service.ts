@@ -466,4 +466,27 @@ export default class ScannerModuleService {
       }
     }
   }
+
+  /**
+   * Bulk scan multiple products by SKU and decrement their inventory by 1 at a specific location
+   */
+  async bulkScan(skus: string[], locationId: string, container: any): Promise<ScanResult[]> {
+    const results: ScanResult[] = []
+    
+    for (const sku of skus) {
+      try {
+        const result = await this.scanProductBySKU(sku, locationId, container)
+        results.push(result)
+      } catch (error) {
+        console.error(`Error scanning SKU ${sku}:`, error)
+        results.push({
+          success: false,
+          message: `Error scanning SKU ${sku}: ${error.message}`,
+          error: "SCAN_ERROR"
+        })
+      }
+    }
+    
+    return results
+  }
 }
