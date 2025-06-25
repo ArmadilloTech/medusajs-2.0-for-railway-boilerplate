@@ -1,0 +1,15 @@
+# Ignore unnecessary files for Railway deployment
+node_modules/
+.git/
+.vscode/
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+Thumbs.db
+
+# Don't ignore yarn.lock - it's essential for reproducible builds
+!yarn.lock
+!package.json 
