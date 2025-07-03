@@ -28,9 +28,18 @@ import { getProductPrice } from "@/lib/util/get-product-price"
 export const dynamicParams = true
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
-  description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+  title: "Blade Box",
+  description: "Experience the ultimate convenience—get premium barbershop products delivered straight to your door with Blade Box. Elevate your grooming game, anytime, anywhere.",
+  openGraph: {
+    images: [
+      {
+        url: "/packagethumb.jpg", // Change this to your actual image filename if different
+        width: 1200,
+        height: 630,
+        alt: "Blade Box delivery driver bringing barbershop products",
+      },
+    ],
+  },
 }
 
 export async function generateStaticParams() {
