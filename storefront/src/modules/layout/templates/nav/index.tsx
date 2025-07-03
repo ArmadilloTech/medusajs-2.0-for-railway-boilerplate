@@ -18,17 +18,17 @@ export async function NavigationHeader() {
   const cart = await retrieveCart()
 
   return (
-    <div className="sticky top-0 inset-x-0 group bg-white text-zinc-900 small:p-4 p-2 text-sm border-b duration-200 border-ui-border-base z-50">
+    <div className="sticky top-0 inset-x-0 group bg-gray-900 text-white small:p-4 p-2 text-sm border-b border-gray-800 duration-200 z-50">
       <header className="flex w-full content-container relative small:mx-auto justify-between">
         <div className="small:mx-auto flex justify-between items-center min-w-full">
           <div className="flex items-center small:space-x-4">
             <LocalizedClientLink
-              className="hover:text-ui-fg-base flex items-center w-fit"
+              className="hover:text-blue-400 flex items-center w-fit"
               href="/"
             >
               <h1 className="small:text-base text-sm font-medium flex items-center">
                 <LogoIcon className="inline mr-2" />
-                Medusa B2B Starter
+                Blade box
               </h1>
             </LocalizedClientLink>
 
@@ -48,17 +48,17 @@ export async function NavigationHeader() {
                 disabled
                 type="text"
                 placeholder="Search for products"
-                className="bg-gray-100 text-zinc-900 px-4 py-2 rounded-full pr-10 shadow-borders-base hidden small:inline-block hover:cursor-not-allowed"
+                className="bg-gray-800 text-white px-4 py-2 rounded-full pr-10 shadow-borders-base hidden small:inline-block hover:cursor-not-allowed border border-gray-700 placeholder-gray-400"
                 title="Install a search provider to enable product search"
               />
             </div>
 
-            <div className="h-4 w-px bg-neutral-300" />
+            <div className="h-4 w-px bg-gray-700" />
 
             {customer && cart?.items && cart.items.length > 0 ? (
               <RequestQuoteConfirmation>
                 <button
-                  className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1"
+                  className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-gray-800 px-2 py-1 text-white"
                   // disabled={isPendingApproval}
                 >
                   <FilePlus />
@@ -67,7 +67,7 @@ export async function NavigationHeader() {
               </RequestQuoteConfirmation>
             ) : (
               <RequestQuotePrompt>
-                <button className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1">
+                <button className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-gray-800 px-2 py-1 text-white">
                   <FilePlus />
                   <span className="hidden small:inline-block">Quote</span>
                 </button>

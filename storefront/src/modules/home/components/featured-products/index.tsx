@@ -8,7 +8,7 @@ export default async function FeaturedProducts({
   countryCode: string
 }) {
   const { collections } = await listCollections({
-    limit: "3",
+    limit: "10",
     fields: "*products",
   })
   const region = await getRegion(countryCode)
@@ -17,13 +17,20 @@ export default async function FeaturedProducts({
     return null
   }
 
+  // Only show the collection named 'Featured' (case-insensitive)
+  const featuredCollection = collections.find(
+    (c) => c.title.toLowerCase() === "featured"
+  )
+
+  if (!featuredCollection) {
+    return null
+  }
+
   return (
     <ul className="flex flex-col gap-x-6 bg-neutral-100">
-      {collections.map((collection) => (
-        <li key={collection.id}>
-          <ProductRail collection={collection} region={region} />
-        </li>
-      ))}
+      <li key={featuredCollection.id}>
+        <ProductRail collection={featuredCollection} region={region} />
+      </li>
     </ul>
   )
 }
