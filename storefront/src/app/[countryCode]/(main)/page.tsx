@@ -319,7 +319,7 @@ export default async function Home(props: {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative animate-slide-in-left">
               <Image
-                src="/phoneBack.png"
+                src="/mapPhone.jpg"
                 alt="Mobile app interface"
                 width={300}
                 height={600}
